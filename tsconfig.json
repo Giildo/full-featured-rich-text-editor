@@ -26,6 +26,9 @@
       "@/*": [
         "src/*"
       ],
+      "@@/*": [
+        "app/*"
+      ],
       "#/*": [
         "types/*"
       ]
@@ -33,6 +36,7 @@
   },
   "include": [
     "src",
+    "app",
     "types/**/*.d.ts",
     "vite.config.ts"
   ]

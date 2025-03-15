@@ -1,0 +1,29 @@
+:root {
+  --jq-decoration-color: oklch(0.881 0.142 201.59);
+
+  --decoration-default-color: oklch(from var(--jq-decoration-color) 1 0.02 h);
+
+  --container-background: oklch(from var(--jq-decoration-color) l c h / 0.05);
+  --container-border-color: oklch(from var(--jq-decoration-color) l c h / 0.2);
+
+  --color-background: var(--decoration-default-color);
+  --text-color: rgba(0, 0, 0, 0.87);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --decoration-default-color: oklch(from var(--jq-decoration-color) 0.1 c h);
+
+    --text-color: rgba(255, 255, 255, 0.87);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--text-color);
+  margin: 0;
+}
