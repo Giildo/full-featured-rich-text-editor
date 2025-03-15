@@ -1,0 +1,34 @@
+#!/bin/sh
+
+echo "🚑️ Running pre-commit checks..."
+
+echo ""
+echo "🚨 Running lint..."
+if ! pnpm lint --max-warnings=0; then
+  echo "🐛 Lint failed. Aborting commit."
+  exit 1
+fi
+echo "✅ Lint passed."
+echo ""
+
+echo ""
+echo "🔍 Running format..."
+pnpm format:silent
+echo "✅ Format passed."
+echo ""
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" = "develop" ] || [ "$branch" = "main" ]; then
+  echo ""
+  echo "🧪 Running unit test..."
+  if ! pnpm test:unit --run; then
+    echo "Unit test failed. Aborting commit."
+    exit 1
+  fi
+  echo "✅ Unit test passed."
+  echo ""
+fi
+
+echo ""
+echo "🚑️ Pre-commit checks passed. Committing..."
+exit 0

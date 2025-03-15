@@ -1,0 +1,40 @@
+{
+  "name": "@jojotique/full-featured-rich-text-editor",
+  "description": "A full-featured rich text editor",
+  "license": "GPL-3.0",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "run-s type-check build-only",
+    "build-only": "vite build",
+    "check": "run-s lint format",
+    "dev": "vite",
+    "format": "prettier --config ../../.prettierrc.json --ignore-path ../../.prettierignore --write src/",
+    "format:silent": "prettier --config ../../.prettierrc.json --ignore-path ../../.prettierignore --log-level silent --write src/",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint . --fix",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "test:unit": "vitest",
+    "type-check": "tsc",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/eslint-plugin": "catalog:",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-oxlint": "catalog:",
+    "eslint-plugin-vue": "catalog:",
+    "globals": "catalog:",
+    "husky": "catalog:",
+    "npm-run-all2": "^7.0.2",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
