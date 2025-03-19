@@ -1,8 +1,5 @@
 import '@@/assets/style/style.css'
-import { RTEOption } from '@/index'
-
-RTEOption.item.title = 'Test'
-RTEOption.item.content = 'Content'
+import '@/index'
 
 const app = document.getElementById('app')
 

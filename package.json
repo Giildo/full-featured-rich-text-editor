@@ -18,6 +18,12 @@
     "type-check": "tsc",
     "prepare": "husky"
   },
+  "peerDependencies": {
+    "shiki": "^3.2.1"
+  },
+  "dependencies": {
+    "shiki": "^3.2.1"
+  },
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@types/node": "catalog:",

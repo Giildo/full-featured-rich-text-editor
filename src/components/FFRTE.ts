@@ -1,10 +1,9 @@
-import containerStyle from '@/assets/style/container.css?inline'
-import '@/components/EditorActions'
+import type { DialogType } from '@/vite-env'
 
-export interface FFRTEItem {
-  title: string
-  content: string
-}
+import containerStyle from '@/assets/style/container.css?inline'
+
+import '@/components/EditorActions'
+import { codeToHtml } from 'shiki/bundle/web'
 
 export const RTEOption = {
   item: {
@@ -13,12 +12,12 @@ export const RTEOption = {
   },
 }
 
-export interface FFRTEOptions {
-  item: FFRTEItem
-}
-
 export class FFRTE extends HTMLElement {
   private _shadowRoot: ShadowRoot
+
+  private readonly _contentContainer: HTMLDivElement | null = null
+
+  private _codeDialogOpen = false
 
   constructor() {
     super()
@@ -31,10 +30,14 @@ export class FFRTE extends HTMLElement {
 
     this._shadowRoot.innerHTML = `
       <style>
+        :host {
+          --decoration-color: ${this.getAttribute('color') ?? 'oklch(0.881 0.142 201.59)'};
+        }
+        
         ${containerStyle}
       </style>
       <div id="editor-container">
-        <editor-actions></editor-actions>
+        <editor-actions code-dialog-open="${this._codeDialogOpen}"></editor-actions>
       
         <header>
           <label id="editor-container-title-label">Titre de votre article</label>
@@ -44,10 +47,55 @@ export class FFRTE extends HTMLElement {
           <label id="editor-container-content-label">Contenu de votre article</label>
           <div aria-labelledby="editor-container-content-label">
             ${RTEOption?.item?.content ?? ''}
-            ${[...Array(100)].map(() => `<p>Paragraphe</p>`).join('')}
           </div>
         </section>
       </div>
     `
+
+    const editorActions = this._shadowRoot.querySelector<HTMLElement>('editor-actions')
+    editorActions?.addEventListener('add-tag', async (e) => {
+      await this._addTag(e as CustomEvent)
+    })
+
+    this._contentContainer = this._shadowRoot.querySelector<HTMLDivElement>(
+      '[aria-labelledby="editor-container-content-label"]',
+    )
+  }
+
+  static get observedAttributes() {
+    return ['color']
+  }
+
+  private async _addTag(e: CustomEvent<DialogType>) {
+    let item: HTMLElement | null = null
+    switch (e.detail) {
+      case 'p':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        item = document.createElement(e.detail)
+        item.contentEditable = 'true'
+        this._contentContainer?.appendChild(item)
+        Promise.resolve().then(() => item!.focus())
+        break
+      case 'code':
+        item = document.createElement('div')
+        item.innerHTML = await codeToHtml('const age = 18', {
+          lang: 'typescript',
+          themes: {
+            light: 'catppuccin-latte',
+            dark: 'catppuccin-mocha',
+          },
+        })
+        item = item.querySelector<HTMLElement>('pre')
+        if (!item) break
+        item.addEventListener('click', () => {
+          console.log('Open code editor')
+        })
+        this._contentContainer?.appendChild(item)
+        break
+    }
   }
 }

@@ -1,0 +1,27 @@
+div {
+  --button-size: 6rem;
+  display: grid;
+  grid-template-columns: repeat(3, var(--button-size));
+
+  button {
+    width: var(--button-size);
+    height: var(--button-size);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--container-border-color);
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}
