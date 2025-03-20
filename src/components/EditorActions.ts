@@ -3,6 +3,7 @@ import type { ActionButton } from '@/vite-env'
 import actionsStyle from '@/assets/style/actions.css?inline'
 
 import '@/components/dialogs/EditorAddTagDialog.ts'
+import { Ref, ref, watch } from '@/utils/ref.ts'
 
 class EditorActions extends HTMLElement {
   private _shadowRoot: ShadowRoot
@@ -11,7 +12,7 @@ class EditorActions extends HTMLElement {
     {
       title: 'Ajouter une balise dans le contenu',
       icon: 'M19,11H15V15H13V11H9V9H13V5H15V9H19M20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M4,6H2V20A2,2 0 0,0 4,22H18V20H4V6Z',
-      onClick: () => this._addItem(),
+      onClick: () => this._onOpenAddTagDialog(),
     },
     {
       title: 'Afficher/cacher les balises',
@@ -26,9 +27,10 @@ class EditorActions extends HTMLElement {
   ]
 
   private _addTagDialog: HTMLElement | null = null
-  private _addTagDialogOpen = false
+  private _addTagDialogOpen: Ref<boolean> = ref<boolean>(false)
 
-  private _codeDialogOpen = false
+  private _codeDialog: HTMLElement | null = null
+  private _codeDialogOpen: Ref<boolean> = ref<boolean>(false)
 
   constructor() {
     super()
@@ -57,8 +59,8 @@ class EditorActions extends HTMLElement {
           .join('')}
       </menu>
       
-      <editor-add-tag-dialog open="${this._addTagDialogOpen}"></editor-add-tag-dialog>
-      <editor-code-dialog open="${this._codeDialogOpen}"></editor-code-dialog>
+      <editor-add-tag-dialog open="${this._addTagDialogOpen.value}"></editor-add-tag-dialog>
+      <editor-code-dialog open="${this._codeDialogOpen.value}"></editor-code-dialog>
     `
 
     this._shadowRoot.querySelectorAll<HTMLButtonElement>('button').forEach((button, index) => {
@@ -66,29 +68,35 @@ class EditorActions extends HTMLElement {
     })
 
     this._addTagDialog = this._shadowRoot.querySelector<HTMLElement>('editor-add-tag-dialog')
-    this._addTagDialog?.addEventListener('close', () => this._closeDialog())
+    this._addTagDialogOpen = watch(this._addTagDialogOpen, () => {
+      this._addTagDialog?.setAttribute('open', `${this._addTagDialogOpen.value}`)
+      this.dispatchEvent(new CustomEvent('add-tag-dialog-open', { detail: this._addTagDialogOpen.value }))
+    })
+    this._addTagDialog?.addEventListener('close', () => {
+      this._addTagDialogOpen.value = false
+    })
     this._addTagDialog?.addEventListener('add-tag', (e) => {
       this.dispatchEvent(new CustomEvent('add-tag', { detail: (e as CustomEvent).detail }))
-      this._closeDialog()
+    })
+
+    this._codeDialog = this._shadowRoot.querySelector<HTMLElement>('editor-code-dialog')
+    this._codeDialogOpen = watch(this._codeDialogOpen, () => {
+      this._codeDialog?.setAttribute('open', `${this._codeDialogOpen.value}`)
+      this.dispatchEvent(new CustomEvent('code-dialog-open', { detail: this._codeDialogOpen.value }))
     })
   }
 
   static get observedAttributes() {
-    return ['code-dialog-open']
+    return ['code-dialog-open', 'add-tag-dialog-open']
   }
 
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-    if (name === 'code-dialog-open') this._codeDialogOpen = newValue === 'true'
+    if (name === 'code-dialog-open') this._codeDialogOpen.value = newValue === 'true'
+    if (name === 'add-tag-dialog-open') this._addTagDialogOpen.value = newValue === 'true'
   }
 
-  private _addItem() {
-    this._addTagDialogOpen = true
-    this._addTagDialog?.setAttribute('open', 'true')
-  }
-
-  private _closeDialog() {
-    this._addTagDialogOpen = false
-    this._addTagDialog?.setAttribute('open', 'false')
+  private _onOpenAddTagDialog() {
+    this._addTagDialogOpen.value = true
   }
 
   private _toggleTags(e: PointerEvent) {

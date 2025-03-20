@@ -4,6 +4,7 @@ import containerStyle from '@/assets/style/container.css?inline'
 
 import '@/components/EditorActions'
 import { codeToHtml } from 'shiki/bundle/web'
+import { ref, Ref, watch } from '@/utils/ref.ts'
 
 export const RTEOption = {
   item: {
@@ -17,7 +18,8 @@ export class FFRTE extends HTMLElement {
 
   private readonly _contentContainer: HTMLDivElement | null = null
 
-  private _codeDialogOpen = false
+  private readonly _codeDialogOpen: Ref<boolean> = ref<boolean>(false)
+  private readonly _addTagDialogOpen: Ref<boolean> = ref<boolean>(false)
 
   constructor() {
     super()
@@ -37,7 +39,11 @@ export class FFRTE extends HTMLElement {
         ${containerStyle}
       </style>
       <div id="editor-container">
-        <editor-actions code-dialog-open="${this._codeDialogOpen}"></editor-actions>
+        <editor-actions 
+          code-dialog-open="${this._codeDialogOpen.value}"
+          add-tag-dialog-open="${this._addTagDialogOpen.value}"
+        >
+        </editor-actions>
       
         <header>
           <label id="editor-container-title-label">Titre de votre article</label>
@@ -56,10 +62,20 @@ export class FFRTE extends HTMLElement {
     editorActions?.addEventListener('add-tag', async (e) => {
       await this._addTag(e as CustomEvent)
     })
+    editorActions?.addEventListener('add-tag-dialog-open', (e) => {
+      this._addTagDialogOpen.value = (e as CustomEvent).detail
+    })
 
     this._contentContainer = this._shadowRoot.querySelector<HTMLDivElement>(
       '[aria-labelledby="editor-container-content-label"]',
     )
+
+    this._addTagDialogOpen = watch(this._addTagDialogOpen, () => {
+      editorActions?.setAttribute('add-tag-dialog-open', `${this._addTagDialogOpen.value}`)
+    })
+    this._codeDialogOpen = watch(this._codeDialogOpen, () => {
+      editorActions?.setAttribute('code-dialog-open', `${this._codeDialogOpen.value}`)
+    })
   }
 
   static get observedAttributes() {
@@ -78,7 +94,10 @@ export class FFRTE extends HTMLElement {
         item = document.createElement(e.detail)
         item.contentEditable = 'true'
         this._contentContainer?.appendChild(item)
-        Promise.resolve().then(() => item!.focus())
+        this._addTagDialogOpen.value = false
+        Promise.resolve().then(() => {
+          item!.focus()
+        })
         break
       case 'code':
         item = document.createElement('div')
