@@ -4,7 +4,7 @@ export interface Ref<T> {
   value: T
 }
 
-export const ref = <T>(value: T) => ({ value })
+export const ref = <T>(value?: T): Ref<T | null> => ({ value: value ?? null })
 
 export const watch = <T extends Ref<unknown>>(value: T, observer: ObserverCallback): T => {
   return new Proxy(value, {

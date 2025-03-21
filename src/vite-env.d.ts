@@ -36,3 +36,16 @@ export interface FFRTEItem {
 export interface FFRTEOptions {
   item: FFRTEItem
 }
+
+// Objects
+export interface EditorAddTagDialogInterface extends HTMLElement {
+  dialog: HTMLDialogElement
+}
+
+export interface EditorCodeDialogInterface extends HTMLElement {
+  dialog: HTMLDialogElement
+}
+
+export interface CoreDialogInterface extends HTMLElement {
+  dialog: HTMLDialogElement
+}

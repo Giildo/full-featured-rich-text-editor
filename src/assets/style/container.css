@@ -75,6 +75,7 @@
     gap: 1rem;
 
     > div {
+      padding: 1rem;
       scrollbar-width: thin;
       scrollbar-color: var(--decoration-color) var(--color-scrollbar-background);
 

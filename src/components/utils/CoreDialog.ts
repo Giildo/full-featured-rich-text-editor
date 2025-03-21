@@ -1,18 +1,14 @@
 import dialogStyle from '@/assets/style/dialog.css?inline'
 
-class CoreDialog extends HTMLElement {
+export class CoreDialog extends HTMLElement {
   private readonly _dialog: HTMLDialogElement
-  private readonly _dialogContainer: HTMLDivElement
-  private readonly _closeButton: HTMLButtonElement
-
-  private _shadowRoot: ShadowRoot
 
   constructor() {
     super()
 
-    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    const shadowRoot: ShadowRoot = this.attachShadow({ mode: 'open' })
 
-    this._shadowRoot.innerHTML = `
+    shadowRoot.innerHTML = `
       <style>
         ${dialogStyle}
       </style>
@@ -32,37 +28,24 @@ class CoreDialog extends HTMLElement {
       </dialog>
     `
 
-    this._dialog = this._shadowRoot.querySelector<HTMLDialogElement>('dialog')!
-    this._closeButton = this._dialog.querySelector<HTMLButtonElement>('div > header > button')!
-    this._closeButton.addEventListener('click', () => this._closeDialog({ isDirectClose: true }))
+    this._dialog = shadowRoot.querySelector<HTMLDialogElement>('dialog')!
+    this._dialog.querySelector<HTMLButtonElement>('div > header > button')!.addEventListener('click', () => {
+      this._dialog.close()
+    })
 
-    this._dialogContainer = this._dialog.querySelector<HTMLDivElement>('dialog > div')!
-    this._dialogContainer.addEventListener('click', (e) => e.stopPropagation())
+    this._dialog.querySelector<HTMLDivElement>('dialog > div')!.addEventListener('click', (e) => {
+      e.stopPropagation()
+    })
 
-    this._dialog.addEventListener('click', (e) => this._closeDialog({ e }))
-  }
-
-  static get observedAttributes() {
-    return ['open']
-  }
-
-  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-    if (name === 'open') {
-      const dialog = this._shadowRoot.querySelector<HTMLDialogElement>('dialog')
-      if (dialog) {
-        if (newValue === 'true') {
-          dialog.showModal()
-        } else {
-          dialog.close()
-        }
+    this._dialog.addEventListener('click', (e) => {
+      if (e?.target === this._dialog) {
+        this._dialog.close()
       }
-    }
+    })
   }
 
-  private _closeDialog(options: { e?: MouseEvent; isDirectClose?: boolean }) {
-    if (options.e?.target === this._dialog || options.isDirectClose) {
-      this.dispatchEvent(new CustomEvent('close'))
-    }
+  public get dialog(): HTMLDialogElement {
+    return this._dialog
   }
 }
 
