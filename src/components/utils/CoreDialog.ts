@@ -11,6 +11,10 @@ export class CoreDialog extends HTMLElement {
     shadowRoot.innerHTML = `
       <style>
         ${dialogStyle}
+        
+        :host {
+          --dialog-size: ${this.getAttribute('size') ?? '20'}rem;
+        }
       </style>
       <dialog>
         <div>

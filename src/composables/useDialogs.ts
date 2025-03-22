@@ -1,12 +1,12 @@
 import { ref } from '@/utils/ref.ts'
 import type { DialogType } from '@/vite-env'
-import { codeToHtml } from 'shiki/bundle/web'
+import { codeToHtml } from 'shiki'
 
 export const addTagDialog = ref<HTMLDialogElement>()
 export const codeDialog = ref<HTMLDialogElement>()
 
 export const contentContainer = ref<HTMLDivElement>()
-export const _addTag = async (type: DialogType) => {
+export const addTag = (type: DialogType) => {
   let item: HTMLElement | null = null
   switch (type) {
     case 'p':
@@ -25,20 +25,26 @@ export const _addTag = async (type: DialogType) => {
       })
       break
     case 'code':
-      item = document.createElement('div')
-      item.innerHTML = await codeToHtml('const age = 18', {
-        lang: 'typescript',
-        themes: {
-          light: 'catppuccin-latte',
-          dark: 'catppuccin-mocha',
-        },
-      })
-      item = item.querySelector<HTMLElement>('pre')
-      if (!item) break
-      item.addEventListener('click', () => {
-        console.log('Open code editor')
-      })
-      contentContainer.value?.appendChild(item)
+      codeDialog.value?.showModal()
       break
   }
+}
+
+export const insertCode = async (language: string, content: string) => {
+  let item: HTMLElement | null = document.createElement('div')
+  item.innerHTML = await codeToHtml(content, {
+    lang: language,
+    themes: {
+      light: 'catppuccin-latte',
+      dark: 'catppuccin-mocha',
+    },
+  })
+  item = item.querySelector<HTMLElement>('pre')
+  if (!item) return
+  item.addEventListener('click', () => {
+    console.log('Open code editor')
+  })
+  contentContainer.value?.appendChild(item)
+  addTagDialog.value?.close()
+  codeDialog.value?.close()
 }

@@ -24,7 +24,7 @@ menu {
       cursor: pointer;
 
       &:hover {
-        background-color: var(--container-border-color);
+        background-color: var(--btn-hover-bgc-color);
       }
 
       svg {
@@ -32,7 +32,7 @@ menu {
         height: 1.5rem;
 
         path {
-          fill: var(--text-color);
+          fill: var(--text-action-color);
         }
       }
     }

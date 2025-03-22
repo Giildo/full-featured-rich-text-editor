@@ -1,8 +1,8 @@
-import containerStyle from '@/assets/style/container.css?inline'
+import containerStyle from '@/assets/style/index.css?inline'
 
 import '@/components/EditorActions'
 
-import { contentContainer } from '@/components/dialogs/useDialogs.ts'
+import { contentContainer } from '@/composables/useDialogs.ts'
 
 export const RTEOption = {
   item: {
@@ -40,7 +40,10 @@ export class FFRTE extends HTMLElement {
         </header>
         <section>
           <label id="editor-container-content-label">Contenu de votre article</label>
-          <div aria-labelledby="editor-container-content-label">
+          <div 
+            aria-labelledby="editor-container-content-label"
+            class="scroll-custom"
+          >
             ${RTEOption?.item?.content ?? ''}
           </div>
         </section>

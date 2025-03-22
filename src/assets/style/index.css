@@ -1,19 +1,31 @@
 :host {
+  @property --decoration-color {
+    syntax: '<color>';
+    initial-value: #33f3ff;
+    inherits: true;
+  }
+
   --decoration-default-color: oklch(from var(--decoration-color) 1 0.02 h);
 
   --color-scrollbar-background: oklch(from var(--decoration-color) 0.75 c h);
 
-  --container-background: oklch(from var(--decoration-color) l c h / 0.05);
-  --container-background-elevation-2: oklch(from var(--container-background) 1 c h);
-  --container-border-color: oklch(from var(--decoration-color) l c h / 0.2);
+  --container-background: oklch(from var(--decoration-color) 0.95 c h);
+  --container-editor-background: oklch(from var(--decoration-color) 0.9 c h);
+  --container-border-color: oklch(from var(--decoration-color) 0.7 c h);
 
   --color-background: var(--decoration-default-color);
-  --text-color: rgba(0, 0, 0, 0.87);
+  --text-color: oklch(from var(--decoration-color) 0.1 c h);
+  --text-action-color: color-mix(in oklch, var(--text-color) 70%, var(--decoration-color) 30%);
+  --btn-hover-bgc-color: rgba(0, 0, 0, 0.1);
 
   --editor-actions-size: 2.5rem;
 
-  --dialog-background: oklch(from var(--jq-decoration-color) 1 0.02 h);
-  --dialog-box-shadow: 0 1px 5px #0003, 0 2px 2px #00000024, 0 3px 1px -2px #0000001f;
+  --dialog-background: oklch(from var(--decoration-color) 0.9 c h);
+  --dialog-header-background: oklch(from var(--container-background) 0.85 c h);
+  --dialog-box-shadow:
+    rgba(0, 0, 0, 0.2) 0px 3px 3px -2px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
+  --dialog-border: 1px solid transparent;
+  --dialog-code-editor-background: oklch(from var(--decoration-color) 0.85 c h);
 
   @media (prefers-color-scheme: dark) {
     .shiki,
@@ -30,10 +42,17 @@
 
     --color-scrollbar-background: oklch(from var(--decoration-color) 0.25 c h);
 
-    --text-color: rgba(255, 255, 255, 0.87);
+    --container-background: oklch(from var(--decoration-color) 0.15 c h);
+    --container-editor-background: oklch(from var(--decoration-color) 0.2 c h);
+    --container-border-color: oklch(from var(--decoration-color) 0.4 c h);
 
-    --dialog-background: oklch(from var(--jq-decoration-color) 0.1 c h);
-    --dialog-box-shadow: 0 1px 5px #fff3, 0 2px 2px #ffffff24, 0 3px 1px -2px #ffffff1f;
+    --text-color: rgba(255, 255, 255, 0.87);
+    --text-action-color: color-mix(in oklch, var(--text-color) 50%, var(--decoration-color) 50%);
+
+    --dialog-background: oklch(from var(--decoration-color) 0.2 c h);
+    --dialog-header-background: oklch(from var(--container-background) 0.25 c h);
+    --dialog-border: 1px solid oklch(from var(--container-border-color) 0.4 c h);
+    --dialog-code-editor-background: oklch(from var(--decoration-color) 0.15 c h);
   }
 }
 
@@ -64,7 +83,9 @@
   header {
     h1 {
       margin: 1rem 0 0;
+      padding: 0 0.5rem;
       border: 1px solid var(--container-border-color);
+      background-color: var(--container-editor-background);
     }
   }
 
@@ -76,6 +97,11 @@
 
     > div {
       padding: 1rem;
+      background-color: var(--container-editor-background);
+      min-height: 2.5rem;
+      border: 1px solid var(--container-border-color);
+      overflow-y: scroll;
+      width: 100%;
       scrollbar-width: thin;
       scrollbar-color: var(--decoration-color) var(--color-scrollbar-background);
 
@@ -91,14 +117,10 @@
         background: var(--color-scrollbar-background);
       }
 
-      min-height: 2.5rem;
-      border: 1px solid var(--container-border-color);
-      overflow-y: scroll;
-      width: 100%;
-
       pre {
         &.shiki {
           cursor: pointer;
+          padding: 1rem;
         }
       }
     }

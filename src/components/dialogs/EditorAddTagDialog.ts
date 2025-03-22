@@ -2,7 +2,7 @@ import dialogStyle from '@/assets/style/dialogAddTag.css?inline'
 import { useItems } from '@/composables/useItems.ts'
 
 import { UseCoreDialog } from '@/components/utils/UseCoreDialog.ts'
-import { _addTag } from '@/components/dialogs/useDialogs.ts'
+import { addTag } from '@/composables/useDialogs.ts'
 import type { DialogType } from '@/vite-env'
 
 export class EditorAddTagDialog extends UseCoreDialog {
@@ -16,8 +16,8 @@ export class EditorAddTagDialog extends UseCoreDialog {
     })
     ;(this._coreDialog?.querySelectorAll<HTMLButtonElement>('.dialog-buttons-container button') || []).forEach(
       (button) => {
-        button.addEventListener('click', async () => {
-          await _addTag(button.dataset.type as DialogType)
+        button.addEventListener('click', () => {
+          addTag(button.dataset.type as DialogType)
         })
       },
     )

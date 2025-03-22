@@ -1,0 +1,74 @@
+form {
+  display: grid;
+  grid-template-rows: 20px 59px 20px 1fr 32px;
+  max-height: calc(80vh - 2rem - 48px);
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--container-border-color);
+    border-radius: 0.25rem;
+    margin: 0.5rem 0 1rem;
+    color: var(--text-color);
+    background: var(--dialog-code-editor-background);
+    cursor: pointer;
+
+    &:active {
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+  }
+
+  pre {
+    --line-height: 1.5rem;
+
+    margin-top: 0.5rem;
+    background-color: var(--dialog-code-editor-background);
+    line-height: var(--line-height);
+    min-height: calc(var(--line-height) * 20);
+    padding: 1rem;
+    width: 100%;
+    overflow: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--decoration-color) var(--color-scrollbar-background);
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--decoration-color);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--color-scrollbar-background);
+    }
+  }
+
+  button {
+    justify-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+
+    &:hover {
+      background-color: var(--btn-hover-bgc-color);
+    }
+
+    svg {
+      fill: var(--text-color);
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}

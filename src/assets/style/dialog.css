@@ -1,10 +1,19 @@
 dialog {
+  @property --dialog-size {
+    syntax: '<length>';
+    initial-value: 20rem;
+    inherits: true;
+  }
+
+  width: var(--dialog-size);
+  max-height: 80vh;
   padding: 0;
   background-color: var(--dialog-background);
   color: var(--text-color);
-  border: none;
+  border: var(--dialog-border);
   box-shadow: var(--dialog-box-shadow);
   border-radius: 0.25rem;
+  overflow: hidden;
 
   * {
     margin: 0;
@@ -12,7 +21,9 @@ dialog {
   }
 
   &::backdrop {
+    background: transparent;
     backdrop-filter: blur(2px);
+    cursor: pointer;
   }
 
   > div {
@@ -20,10 +31,11 @@ dialog {
       width: 100%;
       height: 3rem;
       padding: 0 1rem;
-      background-color: var(--container-background-elevation-2);
+      background-color: var(--dialog-header-background);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      user-select: none;
 
       button {
         padding: 0;
@@ -38,7 +50,7 @@ dialog {
         border-radius: 50%;
 
         &:hover {
-          background-color: var(--container-border-color);
+          background-color: var(--btn-hover-bgc-color);
         }
 
         svg {

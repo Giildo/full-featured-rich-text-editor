@@ -12,16 +12,17 @@ div {
     align-items: center;
     background-color: transparent;
     border: none;
-    color: var(--text-color);
+    color: var(--text-action-color);
     cursor: pointer;
 
     &:hover {
-      background-color: var(--container-border-color);
+      background-color: var(--btn-hover-bgc-color);
     }
 
     svg {
       width: 2rem;
       height: 2rem;
+      fill: var(--text-action-color);
     }
   }
 }

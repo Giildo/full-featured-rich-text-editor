@@ -4,13 +4,14 @@ import type { CoreDialogInterface } from '@/vite-env'
 interface EditorAddTagDialogOptions {
   content: string
   dialogStyle: string
+  size?: number
   title: string
 }
 
 export class UseCoreDialog extends HTMLElement {
   protected readonly _coreDialog: CoreDialogInterface | null = null
 
-  constructor({ content, dialogStyle, title }: EditorAddTagDialogOptions) {
+  constructor({ content, dialogStyle, title, size }: EditorAddTagDialogOptions) {
     super()
 
     const shadowRoot: ShadowRoot = this.attachShadow({ mode: 'open' })
@@ -19,7 +20,7 @@ export class UseCoreDialog extends HTMLElement {
       <style>
         ${dialogStyle}
       </style>
-      <core-dialog dialog-item="true">
+      <core-dialog size="${size ?? 20}" dialog-item="true">
         <h3 slot="title">${title}</h3>
         
         ${content}

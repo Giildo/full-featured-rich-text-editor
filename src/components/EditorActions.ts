@@ -5,7 +5,7 @@ import actionsStyle from '@/assets/style/actions.css?inline'
 import '@/components/dialogs/EditorAddTagDialog.ts'
 import '@/components/dialogs/EditorCodeDialog.ts'
 
-import { addTagDialog, codeDialog } from '@/components/dialogs/useDialogs.ts'
+import { addTagDialog, codeDialog } from '@/composables/useDialogs.ts'
 
 class EditorActions extends HTMLElement {
   private _shadowRoot: ShadowRoot

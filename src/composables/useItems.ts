@@ -79,7 +79,7 @@ export const useItems = () => {
       .map(
         (btn) => `
       <button data-type="${btn.type}">
-        <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="var(--text-color)" d="${btn.icon}" /></svg></span>
+        <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="var(--text-action-color)" d="${btn.icon}" /></svg></span>
         <span>${btn.text}</span>
       </button>
     `,
