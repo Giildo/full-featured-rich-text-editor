@@ -3,7 +3,7 @@ import { useItems } from '@/composables/useItems.ts'
 
 import { UseCoreDialog } from '@/components/utils/UseCoreDialog.ts'
 import { addTag } from '@/composables/useDialogs.ts'
-import type { DialogType } from '@/vite-env'
+import type { DialogType } from '@/type'
 
 export class EditorAddTagDialog extends UseCoreDialog {
   constructor() {

@@ -12,21 +12,21 @@ export interface DialogButton {
   type: DialogType
 }
 
+export type BlockquoteDialogType = 'blockquote'
+export type CodeDialogType = 'code'
+export type ImgDialogType = 'blockquote'
+export type ListDialogType = 'ul' | 'ol'
+export type SimpleDialogType = 'p' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+export type TableDialogType = 'table'
+export type VisualBlockDialogType = 'info' | 'warning'
 export type DialogType =
-  | 'p'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'code'
-  | 'ul'
-  | 'ol'
-  | 'info'
-  | 'warning'
-  | 'img'
-  | 'table'
-  | 'blockquote'
+  | BlockquoteDialogType
+  | CodeDialogType
+  | ImgDialogType
+  | ListDialogType
+  | SimpleDialogType
+  | TableDialogType
+  | VisualBlockDialogType
 
 export interface FFRTEItem {
   title: string

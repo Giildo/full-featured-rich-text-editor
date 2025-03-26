@@ -1,4 +1,4 @@
-import type { DialogButton } from '@/vite-env'
+import type { DialogButton } from '@/type'
 
 export const useItems = () => {
   const addTagButtons: DialogButton[] = [

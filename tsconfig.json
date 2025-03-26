@@ -38,6 +38,7 @@
     "src",
     "app",
     "types/**/*.d.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "src/type.d.ts"
   ]
 }

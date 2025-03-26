@@ -1,5 +1,5 @@
 import '@/components/utils/CoreDialog.ts'
-import type { CoreDialogInterface } from '@/vite-env'
+import type { CoreDialogInterface } from '@/type'
 
 interface EditorAddTagDialogOptions {
   content: string

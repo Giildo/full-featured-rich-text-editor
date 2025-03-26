@@ -1,4 +1,4 @@
-import type { ActionButton, EditorAddTagDialogInterface, EditorCodeDialogInterface } from '@/vite-env'
+import type { ActionButton, EditorAddTagDialogInterface, EditorCodeDialogInterface } from '@/type'
 
 import actionsStyle from '@/assets/style/actions.css?inline'
 
