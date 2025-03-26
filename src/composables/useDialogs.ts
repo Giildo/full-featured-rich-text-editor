@@ -18,7 +18,6 @@ export const addTag = (type: DialogType) => {
       item = document.createElement(type)
       item.contentEditable = 'true'
       contentContainer.value?.appendChild(item)
-      console.log(addTagDialog.value)
       addTagDialog.value?.close()
       Promise.resolve().then(() => {
         item!.focus()
@@ -30,10 +29,20 @@ export const addTag = (type: DialogType) => {
   }
 }
 
-export const insertCode = async (language: string, content: string) => {
+export const insertCode = async (languageSelect: HTMLSelectElement, contentEditor: HTMLPreElement) => {
+  const oldItem =
+    contentContainer.value?.querySelector<HTMLPreElement>(
+      `[data-id="${sessionStorage.getItem('item-update') || ''}"]`,
+    ) || null
+  if (oldItem) {
+    oldItem.removeAttribute('data-id')
+    sessionStorage.removeItem('item-update')
+  }
   let item: HTMLElement | null = document.createElement('div')
-  item.innerHTML = await codeToHtml(content, {
-    lang: language,
+  const langage = languageSelect.value || 'css'
+  const content = contentEditor.innerText || ''
+  item.innerHTML = await codeToHtml(content || '', {
+    lang: langage,
     themes: {
       light: 'catppuccin-latte',
       dark: 'catppuccin-mocha',
@@ -41,10 +50,33 @@ export const insertCode = async (language: string, content: string) => {
   })
   item = item.querySelector<HTMLElement>('pre')
   if (!item) return
+
   item.addEventListener('click', () => {
-    console.log('Open code editor')
+    languageSelect.value = langage
+    contentEditor.innerText = content
+    item!.dataset.id = self.crypto.randomUUID()
+    sessionStorage.setItem('item-update', item!.dataset.id)
+    codeDialog.value?.showModal()
   })
-  contentContainer.value?.appendChild(item)
-  addTagDialog.value?.close()
+
+  if (oldItem) {
+    oldItem.replaceWith(item)
+  } else {
+    contentContainer.value?.appendChild(item)
+    addTagDialog.value?.close()
+  }
+
   codeDialog.value?.close()
+}
+
+export const removeCode = () => {
+  const oldItem =
+    contentContainer.value?.querySelector<HTMLPreElement>(
+      `[data-id="${sessionStorage.getItem('item-update') || ''}"]`,
+    ) || null
+  if (oldItem) {
+    oldItem.remove()
+    sessionStorage.removeItem('item-update')
+    codeDialog.value?.close()
+  }
 }

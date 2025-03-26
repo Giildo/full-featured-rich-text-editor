@@ -14,7 +14,8 @@
   --container-border-color: oklch(from var(--decoration-color) 0.7 c h);
 
   --color-background: var(--decoration-default-color);
-  --text-color: oklch(from var(--decoration-color) 0.1 c h);
+  --text-color: rgba(0, 0, 0, 0.87);
+  --text-disabled-color: rgba(0, 0, 0, 0.38);
   --text-action-color: color-mix(in oklch, var(--text-color) 70%, var(--decoration-color) 30%);
   --btn-hover-bgc-color: rgba(0, 0, 0, 0.1);
 
@@ -47,6 +48,7 @@
     --container-border-color: oklch(from var(--decoration-color) 0.4 c h);
 
     --text-color: rgba(255, 255, 255, 0.87);
+    --text-disabled-color: rgba(255, 255, 255, 0.38);
     --text-action-color: color-mix(in oklch, var(--text-color) 50%, var(--decoration-color) 50%);
 
     --dialog-background: oklch(from var(--decoration-color) 0.2 c h);
