@@ -27,6 +27,14 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         name: 'Complete-rich-text-editor',
         fileName: 'complete-rich-text-editor',
       },
+      rollupOptions: {
+        external: ['shiki'],
+        output: {
+          globals: {
+            shiki: 'shiki',
+          },
+        },
+      },
     },
   }
 })

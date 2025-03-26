@@ -14,7 +14,7 @@ export interface DialogButton {
 
 export type BlockquoteDialogType = 'blockquote'
 export type CodeDialogType = 'code'
-export type ImgDialogType = 'blockquote'
+export type ImgDialogType = 'img'
 export type ListDialogType = 'ul' | 'ol'
 export type SimpleDialogType = 'p' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 export type TableDialogType = 'table'
