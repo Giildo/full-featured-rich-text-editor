@@ -43,6 +43,7 @@ export class FFRTE extends HTMLElement {
           <div 
             aria-labelledby="editor-container-content-label"
             class="scroll-custom"
+            data-name="editor-container"
           >
             ${RTEOption?.item?.content ?? ''}
           </div>

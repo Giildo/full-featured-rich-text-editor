@@ -6,6 +6,11 @@ export interface ActionButton {
   onClick: (e: Event) => void
 }
 
+export interface DialogButtonsGroup {
+  title: string
+  buttons: DialogButton[]
+}
+
 export interface DialogButton {
   icon: string
   text: string
@@ -18,7 +23,7 @@ export type ImgDialogType = 'img'
 export type ListDialogType = 'ul' | 'ol'
 export type SimpleDialogType = 'p' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 export type TableDialogType = 'table'
-export type VisualBlockDialogType = 'info' | 'warning'
+export type VisualBlockDialogType = 'alert' | 'info' | 'success' | 'warning'
 export type DialogType =
   | BlockquoteDialogType
   | CodeDialogType

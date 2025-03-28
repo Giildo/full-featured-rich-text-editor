@@ -28,6 +28,22 @@
   --dialog-border: 1px solid transparent;
   --dialog-code-editor-background: oklch(from var(--decoration-color) 0.85 c h);
 
+  --success-color: oklch(0.616 0.145 153.083);
+  --success-background-color-header: oklch(0.919 0.031 162.167);
+  --success-background-color: oklch(from var(--success-background-color-header) l c h / 0.2);
+
+  --alert-color: oklch(0.613 0.217 29.007);
+  --alert-background-color-header: oklch(0.909 0.041 23.564);
+  --alert-background-color: oklch(from var(--alert-background-color-header) l c h / 0.2);
+
+  --info-color: oklch(0.532 0.142 247.603);
+  --info-background-color-header: oklch(0.901 0.031 237.578);
+  --info-background-color: oklch(from var(--info-background-color-header) l c h / 0.2);
+
+  --warning-color: oklch(0.867 0.177 90.847);
+  --warning-background-color-header: oklch(0.968 0.054 95.868);
+  --warning-background-color: oklch(from var(--warning-background-color-header) l c h / 0.2);
+
   @media (prefers-color-scheme: dark) {
     .shiki,
     .shiki span {
@@ -55,6 +71,14 @@
     --dialog-header-background: oklch(from var(--container-background) 0.25 c h);
     --dialog-border: 1px solid oklch(from var(--container-border-color) 0.4 c h);
     --dialog-code-editor-background: oklch(from var(--decoration-color) 0.15 c h);
+
+    --success-background-color-header: oklch(0.273 0.04 156.812);
+
+    --alert-background-color-header: oklch(0.262 0.057 25.001);
+
+    --info-background-color-header: oklch(0.25 0.04 240.715);
+
+    --warning-background-color-header: oklch(0.338 0.059 95.203);
   }
 }
 
@@ -123,6 +147,93 @@
         &.shiki {
           cursor: pointer;
           padding: 1rem;
+        }
+      }
+
+      .info-block {
+        position: relative;
+        margin: 2rem 0 1rem;
+        border: 1px solid black;
+        padding: 1rem;
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.75rem;
+          line-height: 0.75rem;
+          height: 1rem;
+          border-radius: 0.5rem 0.5rem 0 0;
+          position: absolute;
+          top: -1rem;
+          left: -1px;
+          z-index: 1;
+          padding: 0.125rem 0.75rem;
+          border-top: 1px solid black;
+          border-left: 1px solid black;
+          border-right: 1px solid black;
+
+          svg {
+            width: 0.75rem;
+            height: 0.75rem;
+          }
+        }
+
+        &.alert {
+          background-color: var(--alert-background-color);
+
+          &,
+          & label {
+            border-color: var(--alert-color);
+          }
+
+          label {
+            background-color: var(--alert-background-color-header);
+          }
+        }
+
+        &.info {
+          background-color: var(--info-background-color);
+
+          &,
+          & label {
+            border-color: var(--info-color);
+          }
+
+          label {
+            background-color: var(--info-background-color-header);
+          }
+        }
+
+        &.success {
+          background-color: var(--success-background-color);
+
+          &,
+          & label {
+            border-color: var(--success-color);
+          }
+
+          label {
+            background-color: var(--success-background-color-header);
+          }
+        }
+
+        &.warning {
+          background-color: var(--warning-background-color);
+
+          &,
+          & label {
+            border-color: var(--warning-color);
+          }
+
+          label {
+            background-color: var(--warning-background-color-header);
+          }
+        }
+
+        p {
+          margin: 0;
+          padding: 0;
         }
       }
     }
