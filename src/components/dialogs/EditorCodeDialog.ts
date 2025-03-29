@@ -1,6 +1,8 @@
 import dialogStyle from '@/assets/style/dialogCode.css?inline'
 import { UseCoreDialog } from '@/components/utils/UseCoreDialog.ts'
-import { codeDialog, insertCode, removeCode } from '@/composables/useDialogs.ts'
+import { codeDialog } from '@/composables/useDialogs.ts'
+import { removeCode } from '@/composables/removeMethods.ts'
+import { addCodeBlock } from '@/composables/addMethods.ts'
 
 class EditorCodeDialog extends UseCoreDialog {
   constructor() {
@@ -86,7 +88,7 @@ class EditorCodeDialog extends UseCoreDialog {
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault()
-      await insertCode(languageSelect, pre)
+      await addCodeBlock(languageSelect, pre)
 
       languageSelect.value = 'css'
       pre.innerText = ''
