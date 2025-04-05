@@ -1,5 +1,9 @@
 import { codeDialog, contentContainer, focusToEnd } from '@/composables/useDialogs.ts'
-import { testIfSiblingIsAnInformationBlock, testIfSiblingIsBlock } from '@/composables/moveMethods.ts'
+import {
+  testIfSiblingIsAnInformationBlock,
+  testIfSiblingIsATable,
+  testIfSiblingIsBlock,
+} from '@/composables/moveMethods.ts'
 
 /**
  * Method to remove an element from the DOM.
@@ -15,6 +19,7 @@ export const removeItem = (item: HTMLElement): void => {
     let previousNext = (item.nextElementSibling ?? item.previousElementSibling) as HTMLElement | null
     previousNext = testIfSiblingIsBlock('next', previousNext)
     previousNext = testIfSiblingIsAnInformationBlock('next', previousNext)
+    previousNext = testIfSiblingIsATable('previous', previousNext)
     return previousNext
   }
 

@@ -11,6 +11,7 @@
 
   --container-background: oklch(from var(--decoration-color) 0.95 c h);
   --container-editor-background: oklch(from var(--decoration-color) 0.9 c h);
+  --container-editor-items-background: oklch(from var(--decoration-color) 0.85 c h);
   --container-border-color: oklch(from var(--decoration-color) 0.7 c h);
 
   --color-background: var(--decoration-default-color);
@@ -28,6 +29,8 @@
   --dialog-border: 1px solid transparent;
   --dialog-code-editor-background: oklch(from var(--decoration-color) 0.85 c h);
 
+  --dialog-create-table-td-hover: oklch(from var(--decoration-color) 0.85 c h);
+
   --success-color: oklch(0.616 0.145 153.083);
   --success-background-color-header: oklch(0.919 0.031 162.167);
   --success-background-color: oklch(from var(--success-background-color-header) l c h / 0.2);
@@ -43,6 +46,8 @@
   --warning-color: oklch(0.867 0.177 90.847);
   --warning-background-color-header: oklch(0.968 0.054 95.868);
   --warning-background-color: oklch(from var(--warning-background-color-header) l c h / 0.2);
+
+  --table-border: var(--decoration-color);
 
   @media (prefers-color-scheme: dark) {
     .shiki,
@@ -61,6 +66,7 @@
 
     --container-background: oklch(from var(--decoration-color) 0.15 c h);
     --container-editor-background: oklch(from var(--decoration-color) 0.2 c h);
+    --container-editor-items-background: oklch(from var(--decoration-color) 0.25 c h);
     --container-border-color: oklch(from var(--decoration-color) 0.4 c h);
 
     --text-color: rgba(255, 255, 255, 0.87);
@@ -71,6 +77,8 @@
     --dialog-header-background: oklch(from var(--container-background) 0.25 c h);
     --dialog-border: 1px solid oklch(from var(--container-border-color) 0.4 c h);
     --dialog-code-editor-background: oklch(from var(--decoration-color) 0.15 c h);
+
+    --dialog-create-table-td-hover: oklch(from var(--decoration-color) 0.25 c h);
 
     --success-background-color-header: oklch(0.273 0.04 156.812);
 
@@ -141,6 +149,10 @@
 
       &::-webkit-scrollbar-track {
         background: var(--color-scrollbar-background);
+      }
+
+      * {
+        background-color: var(--container-editor-items-background);
       }
 
       pre {
@@ -235,6 +247,33 @@
         p {
           margin: 0;
           padding: 0;
+        }
+      }
+
+      table {
+        max-width: 100%;
+        border-collapse: collapse;
+
+        tbody,
+        thead {
+          tr {
+            th,
+            td {
+              height: 2rem;
+              width: 5rem;
+              border: 1px solid var(--table-border);
+              text-align: left;
+              cursor: text;
+
+              &.hover {
+                background-color: var(--dialog-create-table-td-hover);
+              }
+            }
+
+            th {
+              border-bottom-width: 2px;
+            }
+          }
         }
       }
     }

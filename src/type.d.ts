@@ -42,12 +42,19 @@ export interface FFRTEOptions {
   item: FFRTEItem
 }
 
+type Siblings = 'next' | 'previous'
+type Direction = 'up' | 'down' | 'left' | 'right'
+
 // Objects
 export interface EditorAddTagDialogInterface extends HTMLElement {
   dialog: HTMLDialogElement
 }
 
 export interface EditorCodeDialogInterface extends HTMLElement {
+  dialog: HTMLDialogElement
+}
+
+export interface EditorTableDialog extends HTMLElement {
   dialog: HTMLDialogElement
 }
 

@@ -49,21 +49,21 @@ export const addTagButtons: DialogButtonsGroup[] = [
         text: 'Code',
         type: 'code',
       },
-      {
+      /*{
         icon: 'M13 19C13 19.7 13.13 20.37 13.35 21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H19C20.11 3 21 3.9 21 5V13.35C20.37 13.13 19.7 13 19 13V5H5V19H13M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H13.35C13.75 15.88 14.47 14.91 15.4 14.21L13.96 12.29M20 18V15H18V18H15V20H18V23H20V20H23V18H20Z',
         text: 'Image',
         type: 'img',
-      },
+      },*/
       {
         icon: 'M5,4H19A2,2 0 0,1 21,6V18A2,2 0 0,1 19,20H5A2,2 0 0,1 3,18V6A2,2 0 0,1 5,4M5,8V12H11V8H5M13,8V12H19V8H13M5,14V18H11V14H5M13,14V18H19V14H13Z',
         text: 'Tableau',
         type: 'table',
       },
-      {
+      /*{
         icon: 'M13 6V14H14.88L12.88 18H18.62L21 13.24V6M15 8H19V12.76L17.38 16H16.12L18.12 12H15M3 6V14H4.88L2.88 18H8.62L11 13.24V6M5 8H9V12.76L7.38 16H6.12L8.12 12H5Z',
         text: 'Citation',
         type: 'blockquote',
-      },
+      },*/
     ],
   },
   {

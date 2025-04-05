@@ -4,6 +4,7 @@ import { addTagInformationBlock, addTagList, addTagSimple } from '@/composables/
 
 export const addTagDialog = ref<HTMLDialogElement>()
 export const codeDialog = ref<HTMLDialogElement>()
+export const tableDialog = ref<HTMLDialogElement>()
 
 export const contentContainer = ref<HTMLDivElement>()
 
@@ -44,6 +45,9 @@ export const addTag = (type: DialogType): void => {
       break
     case 'code':
       codeDialog.value?.showModal()
+      break
+    case 'table':
+      tableDialog.value?.showModal()
       break
     case 'ul':
     case 'ol':

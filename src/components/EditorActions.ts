@@ -1,11 +1,12 @@
-import type { ActionButton, EditorAddTagDialogInterface, EditorCodeDialogInterface } from '@/type'
+import type { ActionButton, EditorAddTagDialogInterface, EditorCodeDialogInterface, EditorTableDialog } from '@/type'
 
 import actionsStyle from '@/assets/style/actions.css?inline'
 
 import '@/components/dialogs/EditorAddTagDialog.ts'
 import '@/components/dialogs/EditorCodeDialog.ts'
+import '@/components/dialogs/EditorTableDialog.ts'
 
-import { addTagDialog, codeDialog } from '@/composables/useDialogs.ts'
+import { addTagDialog, codeDialog, tableDialog } from '@/composables/useDialogs.ts'
 
 class EditorActions extends HTMLElement {
   private _shadowRoot: ShadowRoot
@@ -57,6 +58,7 @@ class EditorActions extends HTMLElement {
       
       <editor-add-tag-dialog></editor-add-tag-dialog>
       <editor-code-dialog></editor-code-dialog>
+      <editor-table-dialog></editor-table-dialog>
     `
 
     this._shadowRoot.querySelectorAll<HTMLButtonElement>('button').forEach((button, index) => {
@@ -65,6 +67,7 @@ class EditorActions extends HTMLElement {
 
     addTagDialog.value = this._shadowRoot.querySelector<EditorAddTagDialogInterface>('editor-add-tag-dialog')!.dialog
     codeDialog.value = this._shadowRoot.querySelector<EditorCodeDialogInterface>('editor-code-dialog')!.dialog
+    tableDialog.value = this._shadowRoot.querySelector<EditorTableDialog>('editor-table-dialog')!.dialog
   }
 
   private _onOpenAddTagDialog() {

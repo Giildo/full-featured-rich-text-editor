@@ -1,4 +1,4 @@
-import { toPreviousNextElement } from '@/composables/moveMethods.ts'
+import { tableMove, toPreviousNextElement } from '@/composables/moveMethods.ts'
 import { removeItem } from '@/composables/removeMethods.ts'
 
 /**
@@ -21,10 +21,10 @@ export const onItemKeydown = (
   callback: () => void,
   removeCallback: () => void = () => {},
 ): void => {
-  if (e.key === 'ArrowUp') {
+  if (e.altKey && e.key === 'ArrowUp') {
     e.preventDefault()
     toPreviousNextElement('previous', item)
-  } else if (e.key === 'ArrowDown') {
+  } else if (e.altKey && e.key === 'ArrowDown') {
     e.preventDefault()
     toPreviousNextElement('next', item)
   } else if ((e.key === 'Backspace' && (item.innerText === '' || item.innerText === '\n')) || e.key === 'Delete') {
@@ -38,5 +38,33 @@ export const onItemKeydown = (
       return
     }
     callback()
+  }
+}
+
+/**
+ * Method to handle the keydown event on a table cell.
+ * This method is used to:
+ * - Alt + arrow up/down/left/right: navigate to the previous/next cell.
+ * - Alt + delete/backspace: remove the content of the cell.
+ *
+ * @param {KeyboardEvent} e - The keyboard event.
+ * @param {HTMLTableCellElement} item - The current table cell element.
+ * @param {HTMLTableElement} table - The table element.
+ *
+ * @return {void}
+ */
+export const onTableKeydown = (e: KeyboardEvent, item: HTMLTableCellElement, table: HTMLTableElement): void => {
+  const key = e.key.toLowerCase().replace('arrow', '')
+  // alt + arrow
+  if (e.altKey && (key === 'up' || key === 'down' || key === 'left' || key === 'right')) {
+    e.preventDefault()
+    tableMove(key, item, table)
+  } else if (e.altKey && e.shiftKey && (key === 'delete' || key === 'backspace')) {
+    e.preventDefault()
+
+    // item.parentNode!.remove()
+  } else if (e.altKey && (key === 'delete' || key === 'backspace')) {
+    e.preventDefault()
+    item.innerText = ''
   }
 }

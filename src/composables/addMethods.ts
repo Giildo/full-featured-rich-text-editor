@@ -1,7 +1,7 @@
 import { ListDialogType, SimpleDialogType, VisualBlockDialogType } from '@/type'
-import { addTagDialog, codeDialog, contentContainer, focusToEnd } from '@/composables/useDialogs.ts'
+import { addTagDialog, codeDialog, contentContainer, focusToEnd, tableDialog } from '@/composables/useDialogs.ts'
 import { addTagButtons } from '@/composables/useItems.ts'
-import { onItemKeydown } from '@/composables/keyboardEvents.ts'
+import { onItemKeydown, onTableKeydown } from '@/composables/keyboardEvents.ts'
 import { codeToHtml } from 'shiki'
 
 /**
@@ -206,4 +206,54 @@ export const addTagSimple = (type: SimpleDialogType, afterThis?: HTMLElement): v
   Promise.resolve().then(() => {
     focusToEnd(item)
   })
+}
+
+export const addTagTable = (x: number, y: number, firstLineIsHeader: boolean): void => {
+  const table = document.createElement('table')
+  let firstCell: HTMLTableCellElement | null = null
+
+  if (firstLineIsHeader) {
+    const thead = document.createElement('thead')
+    const tr = document.createElement('tr')
+    for (let j = 0; j < x; j++) {
+      const th = document.createElement('th')
+      th.contentEditable = 'true'
+      th.dataset.x = j.toString()
+      th.dataset.y = '0'
+
+      if (j === 0) {
+        firstCell = th
+      }
+
+      th.addEventListener('keydown', (e) => onTableKeydown(e, th, table))
+      // th.addEventListener('focus', () => focusToEnd(th))
+      tr.appendChild(th)
+    }
+    thead.appendChild(tr)
+    table.prepend(thead)
+  }
+
+  const tbody = document.createElement('tbody')
+  for (let i = 0; i < (firstLineIsHeader ? y - 1 : y); i++) {
+    const tr = document.createElement('tr')
+    for (let j = 0; j < x; j++) {
+      const td = document.createElement('td')
+      td.contentEditable = 'true'
+      td.dataset.x = j.toString()
+      td.dataset.y = (firstLineIsHeader ? i + 1 : i).toString()
+      td.addEventListener('keydown', (e) => onTableKeydown(e, td, table))
+
+      if (!firstLineIsHeader && i === 0 && j === 0) {
+        firstCell = td
+      }
+      // td.addEventListener('focus', () => focusToEnd(td))
+      tr.appendChild(td)
+    }
+    tbody.appendChild(tr)
+  }
+  table.appendChild(tbody)
+  contentContainer.value?.appendChild(table)
+  tableDialog.value?.close()
+  addTagDialog.value?.close()
+  if (firstCell) focusToEnd(firstCell)
 }
