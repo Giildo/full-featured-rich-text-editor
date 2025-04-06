@@ -208,6 +208,17 @@ export const addTagSimple = (type: SimpleDialogType, afterThis?: HTMLElement): v
   })
 }
 
+/**
+ * Method to add a new table to the content container.
+ * This method is used when the user clicks on the add button in the dialog.
+ * It creates a new table element with the specified number of rows and columns and adds it to the content container.
+ *
+ * @param {number} x - The number of columns in the table.
+ * @param {number} y - The number of rows in the table.
+ * @param {boolean} firstLineIsHeader - Whether the first line of the table is a header or not.
+ *
+ * @return {void}
+ */
 export const addTagTable = (x: number, y: number, firstLineIsHeader: boolean): void => {
   const table = document.createElement('table')
   let firstCell: HTMLTableCellElement | null = null
@@ -218,6 +229,7 @@ export const addTagTable = (x: number, y: number, firstLineIsHeader: boolean): v
     for (let j = 0; j < x; j++) {
       const th = document.createElement('th')
       th.contentEditable = 'true'
+      th.scope = 'col'
       th.dataset.x = j.toString()
       th.dataset.y = '0'
 

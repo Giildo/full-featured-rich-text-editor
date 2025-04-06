@@ -1,8 +1,10 @@
 import containerStyle from '@/assets/style/index.css?inline'
 
+import '@/components/ContextMenu'
 import '@/components/EditorActions'
 
 import { contentContainer } from '@/composables/useDialogs.ts'
+import { initRightClick } from '@/composables/rightClick.ts'
 
 export const RTEOption = {
   item: {
@@ -40,20 +42,22 @@ export class FFRTE extends HTMLElement {
         </header>
         <section>
           <label id="editor-container-content-label">Contenu de votre article</label>
-          <div 
-            aria-labelledby="editor-container-content-label"
-            class="scroll-custom"
-            data-name="editor-container"
-          >
-            ${RTEOption?.item?.content ?? ''}
+          <div class="context-container">
+            <context-menu></context-menu>
+            <div 
+              aria-labelledby="editor-container-content-label"
+              class="scroll-custom"
+            >
+              ${RTEOption?.item?.content ?? ''}
+            </div>
           </div>
         </section>
       </div>
     `
 
-    contentContainer.value = this._shadowRoot.querySelector<HTMLDivElement>(
-      '[aria-labelledby="editor-container-content-label"]',
-    )
+    contentContainer.value = this._shadowRoot.querySelector<HTMLDivElement>('.context-container')
+
+    initRightClick(contentContainer.value!)
   }
 
   static get observedAttributes() {
