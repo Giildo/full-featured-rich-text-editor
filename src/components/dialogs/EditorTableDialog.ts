@@ -1,63 +1,73 @@
-import dialogStyle from '@/assets/style/dialogTable.css?inline'
+import '@/assets/style/dialogTable.css'
 
-import { UseCoreDialog } from '@/components/utils/UseCoreDialog.ts'
 import { addTagTable } from '@/composables/addMethods.ts'
+import { CoreDialog } from '@/components/utils/CoreDialog.ts'
+import { tableDialog } from '@/composables/useDialogs.ts'
 
-export class EditorTableDialog extends UseCoreDialog {
-  private tableSize: HTMLParagraphElement
-  private tds: HTMLTableCellElement[] = []
+export class EditorTableDialog {
+  private readonly _tableSize: HTMLParagraphElement = document.createElement('p')
+  private _TDs: HTMLTableCellElement[] = []
 
-  constructor() {
-    super({
-      dialogStyle,
+  constructor(fullRichTextEditor: HTMLDivElement) {
+    const div = document.createElement('div')
+    div.classList.add('table-dialog-content')
+
+    // Aside
+    const aside = document.createElement('aside')
+
+    // Aside - Checkbox
+    const asideDiv = document.createElement('div')
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.name = 'withHeader'
+    checkbox.id = 'withHeader'
+    checkbox.checked = true
+    const label = document.createElement('label')
+    label.setAttribute('for', 'withHeader')
+    label.textContent = 'La première ligne est une en-tête'
+    asideDiv.append(checkbox, label)
+
+    // Aside - Paragraph
+    this._tableSize.textContent = 'Tableau de 0 sur 0'
+
+    aside.append(asideDiv, this._tableSize)
+    div.append(aside)
+
+    // Table
+    const table = document.createElement('table')
+    Array.from({ length: 10 }, (_, i) => {
+      const tr = document.createElement('tr')
+      Array.from({ length: 10 }, (_, j) => {
+        const td = document.createElement('td')
+        td.dataset.x = j.toString()
+        td.dataset.y = i.toString()
+        td.addEventListener('mouseover', () => {
+          this._onMouseOver(parseInt(td.dataset.x!), parseInt(td.dataset.y!))
+        })
+        td.addEventListener('click', () => {
+          addTagTable(parseInt(td.dataset.x!) + 1, parseInt(td.dataset.y!) + 1, checkbox.checked)
+        })
+        this._TDs.push(td)
+        tr.appendChild(td)
+      })
+      table.appendChild(tr)
+    })
+    div.appendChild(table)
+
+    const coreDialog = new CoreDialog(fullRichTextEditor, {
       title: 'Ajouter un tableau',
-      content: `<div class="table-dialog-content">
-        <aside>
-          <div>
-            <input type="checkbox" name="withHeader" id="withHeader" checked>
-            <label for="withHeader">La première ligne est une en-tête</label>
-          </div>
-          <p>Tableau de 0 sur 0</p>
-        </aside>
-        <table>
-          ${Array.from(
-            { length: 10 },
-            (_, i) => `
-            <tr>
-              ${Array.from({ length: 10 }, (_, j) => `<td data-x="${j}" data-y="${i}"></td>`).join('')}
-            </tr>
-          `,
-          ).join('')}
-        </table>
-      </div>`,
       size: 38,
+      contentClasses: ['full-featured-rich-text-editor-table-dialog'],
+      dialogContent: div,
     })
-
-    this.tableSize = this.shadowRoot!.querySelector('aside p')!
-    this.tds = Array.from(this.shadowRoot!.querySelectorAll('td'))
-
-    this.tds.forEach((td) => {
-      td.addEventListener('mouseover', () => {
-        this._onMouseOver(parseInt(td.dataset.x!), parseInt(td.dataset.y!))
-      })
-
-      td.addEventListener('click', () => {
-        addTagTable(
-          parseInt(td.dataset.x!) + 1,
-          parseInt(td.dataset.y!) + 1,
-          (this.shadowRoot!.querySelector('input') as HTMLInputElement).checked,
-        )
-      })
-    })
+    tableDialog.value = coreDialog.dialog
   }
 
   private _onMouseOver(x: number, y: number) {
-    this.tds.forEach((td) => {
+    this._TDs!.forEach((td) => {
       td.classList.toggle('hover', parseInt(td.dataset.x!) <= x && parseInt(td.dataset.y!) <= y)
     })
 
-    this.tableSize!.textContent = `Tableau de ${x + 1} sur ${y + 1}`
+    this._tableSize!.textContent = `Tableau de ${x + 1} sur ${y + 1}`
   }
 }
-
-customElements.define('editor-table-dialog', EditorTableDialog)

@@ -1,16 +1,13 @@
-import type { ActionButton, EditorAddTagDialogInterface, EditorCodeDialogInterface, EditorTableDialog } from '@/type'
+import '@/assets/style/actions.css'
 
-import actionsStyle from '@/assets/style/actions.css?inline'
+import type { ActionButton, CodeDialogOptions } from '@/type'
 
-import '@/components/dialogs/EditorAddTagDialog.ts'
-import '@/components/dialogs/EditorCodeDialog.ts'
-import '@/components/dialogs/EditorTableDialog.ts'
+import { addTagDialog } from '@/composables/useDialogs.ts'
+import { EditorAddTagDialog } from '@/components/dialogs/EditorAddTagDialog.ts'
+import { EditorCodeDialog } from '@/components/dialogs/EditorCodeDialog.ts'
+import { EditorTableDialog } from '@/components/dialogs/EditorTableDialog.ts'
 
-import { addTagDialog, codeDialog, tableDialog } from '@/composables/useDialogs.ts'
-
-class EditorActions extends HTMLElement {
-  private _shadowRoot: ShadowRoot
-
+export class EditorActions {
   private _buttons: ActionButton[] = [
     {
       title: 'Ajouter une balise dans le contenu',
@@ -29,45 +26,34 @@ class EditorActions extends HTMLElement {
     },
   ]
 
-  constructor() {
-    super()
+  constructor(fullRichTextEditor: HTMLDivElement, { languages }: CodeDialogOptions) {
+    const menuContainer = document.createElement('menu')
 
-    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._buttons.forEach((button) => {
+      const li = document.createElement('li')
 
-    this._shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --button-nb: ${this._buttons.length};
-        }
-      
-        ${actionsStyle}
-      </style>
-      <menu>
-        ${this._buttons
-          .map((button) => {
-            return `
-              <li>
-                <button title="${button.title}">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="${button.icon}" /></svg>
-                </button>
-              </li>
-            `
-          })
-          .join('')}
-      </menu>
-      
-      <editor-add-tag-dialog></editor-add-tag-dialog>
-      <editor-code-dialog></editor-code-dialog>
-      <editor-table-dialog></editor-table-dialog>
-    `
+      const buttonElement = document.createElement('button')
+      buttonElement.title = button.title
+      buttonElement.addEventListener('click', button.onClick)
 
-    this._shadowRoot.querySelectorAll<HTMLButtonElement>('button').forEach((button, index) => {
-      button.addEventListener('click', this._buttons[index].onClick)
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+      svg.setAttribute('viewBox', '0 0 24 24')
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path.setAttribute('d', button.icon)
+
+      svg.appendChild(path)
+      buttonElement.appendChild(svg)
+      li.appendChild(buttonElement)
+      menuContainer.appendChild(li)
     })
 
-    addTagDialog.value = this._shadowRoot.querySelector<EditorAddTagDialogInterface>('editor-add-tag-dialog')!.dialog
-    codeDialog.value = this._shadowRoot.querySelector<EditorCodeDialogInterface>('editor-code-dialog')!.dialog
-    tableDialog.value = this._shadowRoot.querySelector<EditorTableDialog>('editor-table-dialog')!.dialog
+    fullRichTextEditor.insertAdjacentElement('afterbegin', menuContainer)
+
+    new EditorAddTagDialog(fullRichTextEditor)
+    new EditorCodeDialog(fullRichTextEditor, { languages })
+    new EditorTableDialog(fullRichTextEditor)
   }
 
   private _onOpenAddTagDialog() {
@@ -82,5 +68,3 @@ class EditorActions extends HTMLElement {
     console.log(e)
   }
 }
-
-customElements.define('editor-actions', EditorActions)

@@ -1,4 +1,8 @@
-:host {
+* {
+  box-sizing: border-box;
+}
+
+#full-rich-text-editor-container {
   @property --decoration-color {
     syntax: '<color>';
     initial-value: #33f3ff;
@@ -19,6 +23,8 @@
   --text-disabled-color: rgba(0, 0, 0, 0.38);
   --text-action-color: color-mix(in oklch, var(--text-color) 70%, var(--decoration-color) 30%);
   --btn-hover-bgc-color: rgba(0, 0, 0, 0.1);
+
+  --context-menu-background: oklch(from var(--decoration-color) 0.8 c h);
 
   --editor-actions-size: 2.5rem;
 
@@ -73,6 +79,8 @@
     --text-disabled-color: rgba(255, 255, 255, 0.38);
     --text-action-color: color-mix(in oklch, var(--text-color) 50%, var(--decoration-color) 50%);
 
+    --context-menu-background: oklch(from var(--decoration-color) 0.3 c h);
+
     --dialog-background: oklch(from var(--decoration-color) 0.2 c h);
     --dialog-header-background: oklch(from var(--container-background) 0.25 c h);
     --dialog-border: 1px solid oklch(from var(--container-border-color) 0.4 c h);
@@ -88,13 +96,7 @@
 
     --warning-background-color-header: oklch(0.338 0.059 95.203);
   }
-}
 
-* {
-  box-sizing: border-box;
-}
-
-#editor-container {
   background-color: var(--container-background);
   width: calc(100% - 10rem);
   margin: 0 auto;
@@ -108,7 +110,7 @@
   gap: 1rem;
   color: var(--text-color);
 
-  editor-actions {
+  > menu {
     position: absolute;
     top: 0;
     left: calc(var(--editor-actions-size) * -1);
@@ -129,7 +131,7 @@
     }
   }
 
-  section {
+  > section {
     width: 100%;
     display: grid;
     grid-template-rows: 20px 1fr;

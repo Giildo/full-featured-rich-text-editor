@@ -1,4 +1,5 @@
-import { DialogButtonsGroup } from '@/type'
+import type { DialogButtonsGroup, DialogType } from '@/type'
+import { addTag } from '@/composables/useDialogs.ts'
 
 export const addTagButtons: DialogButtonsGroup[] = [
   {
@@ -108,21 +109,28 @@ export const addTagButtons: DialogButtonsGroup[] = [
   },
 ]
 
-export const buttonsHtmlContent = (): string =>
-  addTagButtons
-    .map(
-      (buttonsGroup) => `
-      <h2 class="dialog-buttons-group-title">${buttonsGroup.title}</h2>
-      ${buttonsGroup.buttons
-        .map(
-          (btn) => `
-        <button data-type="${btn.type}">
-          <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="var(--text-action-color)" d="${btn.icon}" /></svg></span>
-          <span>${btn.text}</span>
-        </button>
-`,
-        )
-        .join('')}
-    `,
-    )
-    .join('')
+export const buttonsHtmlContent = (buttonContainer: HTMLDivElement): void => {
+  addTagButtons.forEach((buttonsGroup) => {
+    const buttonsGroupTitle = document.createElement('h2')
+    buttonsGroupTitle.className = 'dialog-buttons-group-title'
+    buttonsGroupTitle.innerText = buttonsGroup.title
+    buttonContainer.appendChild(buttonsGroupTitle)
+
+    buttonsGroup.buttons.forEach((button) => {
+      const buttonElement = document.createElement('button')
+      buttonElement.setAttribute('data-type', button.type)
+      buttonElement.innerHTML = `
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path fill="var(--text-action-color)" d="${button.icon}" />
+          </svg>
+        </span>
+        <span>${button.text}</span>
+      `
+      buttonElement.addEventListener('click', () => {
+        addTag(buttonElement.dataset.type as DialogType)
+      })
+      buttonContainer.appendChild(buttonElement)
+    })
+  })
+}

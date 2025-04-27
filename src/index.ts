@@ -1,5 +1,3 @@
-import { FFRTE } from '@/components/FFRTE'
+import '@/assets/style/index.css'
 
-export { RTEOption } from '@/components/FFRTE'
-
-customElements.define('rich-text-editor', FFRTE)
+export { FFRTE } from '@/components/FFRTE'

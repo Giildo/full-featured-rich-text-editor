@@ -1,4 +1,4 @@
-dialog {
+.full-featured-rich-text-editor-dialog {
   @property --dialog-size {
     syntax: '<length>';
     initial-value: 20rem;
@@ -60,7 +60,7 @@ dialog {
       }
     }
 
-    section {
+    > section {
       padding: 1rem;
     }
   }

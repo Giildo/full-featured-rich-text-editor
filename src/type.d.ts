@@ -1,5 +1,41 @@
 /// <reference types="vite/client" />
 
+import type { BundledLanguage } from 'shiki'
+
+// Full Featured Rich Text Editor
+export interface FFRTEItem {
+  content: string
+  title: string
+}
+
+export type FFRTEOptions = FFRTECoreOptions & CodeDialogOptions
+
+export interface FFRTECoreOptions {
+  color?: string
+  container: HTMLElement
+  item: FFRTEItem
+}
+
+// Dialog
+export interface CoreDialogOptions {
+  contentClasses?: string[]
+  dialogContent: HTMLElement
+  size?: number
+  title: string
+}
+
+// Dialog code
+export interface CodeDialogOptions {
+  languages?: BundledLanguage[]
+}
+
+export interface CodeDialogFooterButton {
+  icon: string
+  onClick: (e: Event) => void
+  text: string
+  type: 'submit' | 'reset' | 'button'
+}
+
 export interface ActionButton {
   icon: string
   title: string
@@ -33,31 +69,10 @@ export type DialogType =
   | TableDialogType
   | VisualBlockDialogType
 
-export interface FFRTEItem {
-  title: string
-  content: string
-}
-
-export interface FFRTEOptions {
-  item: FFRTEItem
-}
-
 type Siblings = 'next' | 'previous'
 type Direction = 'up' | 'down' | 'left' | 'right'
 
-// Objects
-export interface EditorAddTagDialogInterface extends HTMLElement {
-  dialog: HTMLDialogElement
-}
-
-export interface EditorCodeDialogInterface extends HTMLElement {
-  dialog: HTMLDialogElement
-}
-
-export interface EditorTableDialog extends HTMLElement {
-  dialog: HTMLDialogElement
-}
-
-export interface CoreDialogInterface extends HTMLElement {
-  dialog: HTMLDialogElement
+export interface ContextData {
+  label: string
+  action: (payload: { e?: Event; shadowRoot: ShadowRoot }) => void
 }

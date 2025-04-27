@@ -35,8 +35,8 @@
     }
   },
   "include": [
-    "src",
-    "app",
+    "src/**/*.ts",
+    "app/**/*.ts",
     "types/**/*.d.ts",
     "vite.config.ts",
     "src/type.d.ts"
