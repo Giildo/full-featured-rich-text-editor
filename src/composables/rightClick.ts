@@ -1,41 +1,95 @@
 import { ref } from '@/utils/ref.ts'
 
-export const contextMenu = ref<HTMLElement>()
+type SpanType = 'bold' | 'italic' | 'lang'
+
+export const contextContainer = ref<HTMLDivElement>()
+export const contextContainerBackdrop = ref<HTMLDivElement>()
+export const contextMenuDialog = ref<HTMLDialogElement>()
+export const contextMenuDialogList = ref<HTMLUListElement>()
 
 export const textSelection = ref<Selection | null>(null)
 export const hasTextSelection = ref(false)
 
-export const openContextMenu = (e: MouseEvent, editor: HTMLDivElement) => {
+const closeContextMenu = () => {
+  contextMenuDialog.value!.close()
+
+  contextContainerBackdrop.value!.remove()
+
+  hasTextSelection.value = false
+  textSelection.value = null
+}
+
+export const openContextMenu = (e: MouseEvent) => {
   e.preventDefault()
-  if (contextMenu.value) {
+  if (contextMenuDialog.value) {
     if (window.getSelection()?.toString()) {
       hasTextSelection.value = true
       textSelection.value = window.getSelection()
     }
 
-    const { x, y } = editor.getBoundingClientRect()
-    contextMenu.value.style.top = `${e.clientY - y}px`
-    contextMenu.value.style.left = `${e.clientX - x}px`
-    contextMenu.value.classList.add('active')
+    const { x, y } = contextContainer.value!.getBoundingClientRect()
+    contextMenuDialog.value.style.top = `${e.clientY - y}px`
+    contextMenuDialog.value.style.left = `${e.clientX - x}px`
 
-    const closeContextMenu = (e: MouseEvent) => {
-      if (!contextMenu.value!.contains(e.target as Node)) {
-        contextMenu.value!.classList.remove('active')
+    contextContainerBackdrop.value = document.createElement('div')
+    contextContainerBackdrop.value.classList.add('custom-backdrop')
+    contextMenuDialog.value.insertAdjacentElement('afterend', contextContainerBackdrop.value)
 
-        hasTextSelection.value = false
-        textSelection.value = null
+    contextMenuDialog.value.show()
 
-        document.removeEventListener('click', closeContextMenu)
+    const onClose = (event: MouseEvent) => {
+      if (event.target === contextMenuDialog.value) {
+        closeContextMenu()
+
+        document.removeEventListener('click', onClose)
       }
     }
 
-    document.addEventListener('click', closeContextMenu)
+    document.addEventListener('click', onClose)
   }
 }
 
-export const initRightClick = (editor: HTMLDivElement) => {
-  editor.addEventListener('contextmenu', (e: MouseEvent) => {
+export const initRightClick = () => {
+  contextContainer.value?.addEventListener('contextmenu', (e: MouseEvent) => {
     e.preventDefault()
-    openContextMenu(e, editor)
+    openContextMenu(e)
   })
+}
+
+export const contextSurroundBySpan = (type: SpanType): void => {
+  const selection = textSelection.value
+  if (selection) {
+    const range = selection.getRangeAt(0)
+    const selectedText = range.toString()
+
+    // Surround the selected text with a span element
+    const span = document.createElement('span')
+    if (type === 'bold' || type === 'italic') {
+      span.classList.add(`ffrte-${type}`)
+    } else if (type === 'lang') {
+      span.lang = 'en'
+    }
+    span.textContent = selectedText
+    range.deleteContents() // Remove the selected text
+    range.insertNode(span) // Insert the new span element
+    // Move the cursor after the inserted span
+    const newRange = document.createRange()
+    newRange.setStartAfter(span)
+    newRange.collapse(true)
+    selection.removeAllRanges() // Clear the current selection
+    selection.addRange(newRange) // Set the new range
+    closeContextMenu()
+  }
+}
+
+export const contextBold = () => {
+  contextSurroundBySpan('bold')
+}
+
+export const contextItalic = () => {
+  contextSurroundBySpan('italic')
+}
+
+export const contextLang = () => {
+  contextSurroundBySpan('lang')
 }

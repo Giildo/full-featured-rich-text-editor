@@ -1,7 +1,7 @@
 import type { FFRTEOptions } from '@/type'
-import '@/components/contextMenu/ContextMenu.ts'
+
 import { contentContainer } from '@/composables/useDialogs.ts'
-import { initRightClick } from '@/composables/rightClick.ts'
+import { contextContainer, initRightClick } from '@/composables/rightClick.ts'
 import { EditorActions } from '@/components/EditorActions.ts'
 import { ContextMenu } from '@/components/contextMenu/ContextMenu.ts'
 
@@ -44,12 +44,13 @@ export class FFRTE {
     this._fullRichTextEditor = container.querySelector<HTMLDivElement>('#full-rich-text-editor-container')!
 
     new EditorActions(this._fullRichTextEditor, { languages })
-    new ContextMenu(this._fullRichTextEditor)
 
     contentContainer.value = container.querySelector<HTMLDivElement>(
       '[aria-labelledby="editor-container-content-label"]',
-    )
+    )!
+    contextContainer.value = container.querySelector<HTMLDivElement>('.context-container')!
+    new ContextMenu(contextContainer.value)
 
-    initRightClick(container.querySelector<HTMLDivElement>('.context-container')!)
+    initRightClick()
   }
 }

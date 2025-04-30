@@ -263,6 +263,17 @@
           }
         }
 
+        span {
+          &.ffrte-bold {
+            font-weight: bold;
+          }
+
+          &.ffrte-italic,
+          &[lang='en'] {
+            font-style: italic;
+          }
+        }
+
         table {
           max-width: 100%;
           border-collapse: collapse;

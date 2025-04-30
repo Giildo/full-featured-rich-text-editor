@@ -1,39 +1,43 @@
+import '@/assets/style/contextMenu.css'
+
 import '@/components/contextMenu/ContextMenuButton.ts'
+import {
+  contextBold,
+  contextItalic,
+  contextLang,
+  contextMenuDialog,
+  contextMenuDialogList,
+} from '@/composables/rightClick.ts'
 
 export class ContextMenu {
   dialog: HTMLDialogElement = document.createElement('dialog')
 
+  _buttons: { label: string; action: () => void }[] = [
+    { label: 'Gras', action: contextBold },
+    { label: 'Italique', action: contextItalic },
+    { label: 'Anglais', action: contextLang },
+  ]
+
   constructor(fullRichTextEditor: HTMLDivElement) {
-    const dialog = document.createElement('dialog')
-    dialog.setAttribute('popover', '')
+    this.dialog = document.createElement('dialog')
+    this.dialog.setAttribute('popover', '')
+    this.dialog.classList.add('full-featured-rich-text-editor-context-menu-dialog')
 
     const list = document.createElement('ul')
 
-    const li = document.createElement('li')
-    li.innerText = 'test'
-    li.addEventListener('click', () => {
-      console.log('test')
-    })
-    list.appendChild(li)
-    list.appendChild(li)
-    list.appendChild(li)
-    dialog.appendChild(list)
-    fullRichTextEditor.appendChild(dialog)
-
-    /*contextMenu.value = this._shadowRoot.querySelector<HTMLDivElement>('#contextMenu')!
-
-    const ul = contextMenu.value.querySelector<HTMLUListElement>('ul')!
-    contextButtons.forEach((button) => {
-      const contextMenuButton = document.createElement('context-menu-button')
-      contextMenuButton.innerText = button.label
-      contextMenuButton.addEventListener('context-menu-button-click', (e) => {
-        e.stopPropagation()
-        button.action({
-          e,
-          shadowRoot: this._shadowRoot,
-        })
+    this._buttons.forEach(({ label, action }) => {
+      const li = document.createElement('li')
+      li.innerHTML = `<button>${label}</button>`
+      li.addEventListener('click', () => {
+        action()
+        this.dialog.close()
       })
-      ul.appendChild(contextMenuButton)
-    })*/
+      list.appendChild(li)
+    })
+    this.dialog.appendChild(list)
+    fullRichTextEditor.appendChild(this.dialog)
+
+    contextMenuDialog.value = this.dialog
+    contextMenuDialogList.value = list
   }
 }
