@@ -22,7 +22,7 @@
     "shiki": "^3.2.1"
   },
   "dependencies": {
-    "shiki": "^3.2.1"
+    "shiki": "^3.3.0"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
@@ -36,7 +36,7 @@
     "eslint-plugin-vue": "catalog:",
     "globals": "catalog:",
     "husky": "catalog:",
-    "npm-run-all2": "^7.0.2",
+    "npm-run-all2": "catalog:",
     "oxlint": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
